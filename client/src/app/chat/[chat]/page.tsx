@@ -161,9 +161,7 @@ export default function Chat() {
                 </Avatar>
                 <div
                   className={`rounded-lg px-4 py-2 text-sm break-words ${
-                    message.role === "user"
-                      ? "bg-gray-700 text-white"
-                      : "bg-gray-100"
+                    message.role === "user" ? "bg-black text-white" : "bg-white"
                   }`}
                   style={{ width: "80%", overflowWrap: "break-word" }}
                 >
