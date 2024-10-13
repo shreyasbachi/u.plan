@@ -18,8 +18,6 @@ export async function POST(req: Request) {
     // Remove extra whitespace
     text = text.replace(/\s+/g, " ").trim();
 
-    console.log("Cleaned Text: \n", text);
-
     const response = await fetch("http://localhost:8787/notes", {
       method: "POST",
       headers: {

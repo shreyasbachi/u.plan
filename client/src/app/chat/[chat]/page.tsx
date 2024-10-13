@@ -6,11 +6,20 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Loader2 } from "lucide-react";
+import { Loader2, Paperclip } from "lucide-react";
 import Link from "next/link";
 import ShinyText from "@/components/ui/shiny-text";
 import ReactMarkdown from "react-markdown";
 import { useSearchParams } from "next/navigation";
+import { UploadButton } from "@/utils/uploadthing";
+import { toast } from "sonner";
+
+const Blobs = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+    <div className="absolute -left-1/4 -top-1/4 w-1/2 h-1/2 rounded-full bg-orange-300 opacity-30 blur-3xl" />
+    <div className="absolute -right-1/4 -bottom-1/4 w-1/2 h-1/2 rounded-full bg-orange-300 opacity-30 blur-3xl" />
+  </div>
+);
 
 export default function Chat() {
   const loadingMessages = ["Thinking", "Analyzing", "Generating", "Processing"];
@@ -66,8 +75,10 @@ export default function Chat() {
         const decoder = new TextDecoder();
         let fullResponse = "";
 
-        setMessages((prev) => [...prev, { role: "bot", content: "Loading..." }]);
-
+        setMessages((prev) => [
+          ...prev,
+          { role: "bot", content: "Loading..." },
+        ]);
 
         while (true) {
           const { done, value } = await reader.read();
@@ -97,37 +108,46 @@ export default function Chat() {
 
   return (
     <>
-      <header className="flex justify-between items-center p-4 w-full">
+      <header className="flex justify-center items-center p-4">
         <div className="flex items-center">
           <Link href={"/"}>
             <Image src="/logo.png" alt="U-Plan Logo" width={40} height={40} />
           </Link>
         </div>
-        <Link href={"/chat"}>
-          <h1 className="text-3xl font-bold tracking-tight">u-plan</h1>
-        </Link>
-        <nav>
-          <ul className="flex">
-            <Link href="/">
-              <Button variant={"link"}>Home</Button>
-            </Link>{" "}
-            <Link href="/demo/85281">
-              <Button variant={"link"}>Demo</Button>
-            </Link>{" "}
-          </ul>
-        </nav>
+        <div className="flex items-center justify-between w-full">
+          <Link href={"/chat"}>
+            <h1 className="text-3xl font-bold tracking-tight">u-plan</h1>
+          </Link>
+          <nav>
+            <ul className="flex space-x-4">
+              <li>
+                <Link href="/">
+                  <Button variant="link">Home</Button>
+                </Link>
+              </li>
+              <li>
+                <Link href="/demo/85281">
+                  <Button variant="link">Demo</Button>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </header>
       <main className="flex-grow h-[80vh]">
+        <Blobs />
         <ScrollArea className="h-full w-full p-4" ref={scrollAreaRef}>
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`flex ${message.role === "user" ? "justify-end" : "justify-start"
-                } mb-4`}
+              className={`flex ${
+                message.role === "user" ? "justify-end" : "justify-start"
+              } mb-4`}
             >
               <div
-                className={`flex items-center ${message.role === "user" ? "flex-row-reverse" : "flex-row"
-                  }`}
+                className={`flex items-center ${
+                  message.role === "user" ? "flex-row-reverse" : "flex-row"
+                }`}
               >
                 <Avatar className="w-8 h-8 m-2">
                   {message.role === "bot" ? (
@@ -140,13 +160,16 @@ export default function Chat() {
                   )}
                 </Avatar>
                 <div
-                  className={`rounded-lg px-4 py-2 text-sm break-words ${message.role === "user"
-                    ? "bg-gray-700 text-white"
-                    : "bg-gray-100"
-                    }`}
+                  className={`rounded-lg px-4 py-2 text-sm break-words ${
+                    message.role === "user"
+                      ? "bg-gray-700 text-white"
+                      : "bg-gray-100"
+                  }`}
                   style={{ width: "80%", overflowWrap: "break-word" }}
                 >
-                  {isLoading && message.role === "bot" && index === messages.length - 1 ? (
+                  {isLoading &&
+                  message.role === "bot" &&
+                  index === messages.length - 1 ? (
                     <div className="flex items-center space-x-2">
                       <Loader2 className="h-4 w-4 animate-spin" />
                       <span>Thinking...</span>
@@ -158,14 +181,13 @@ export default function Chat() {
                       {message.content}
                     </ReactMarkdown>
                   )}
-
                 </div>
               </div>
             </div>
           ))}
         </ScrollArea>
       </main>
-      <footer className="p-4 px-12">
+      <footer className="p-4 flex space-x-1">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -184,6 +206,59 @@ export default function Chat() {
             {isLoading ? "..." : "Send"}
           </Button>
         </form>
+        <UploadButton
+          content={{
+            button: ({ state }: any) => (
+              <div
+                className="rounded-full bg-transparent hover:bg-accent hover:text-accent-foreground w-10 h-10 flex items-center justify-center"
+                data-state={state}
+              >
+                <label
+                  data-ut-element="button"
+                  data-state={state}
+                  className="cursor-pointer"
+                >
+                  <input className="hidden" />
+                  {state === "readying" ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <Paperclip className="h-5 w-5 stroke-1 text-black" />
+                  )}
+                </label>
+                <div
+                  data-ut-element="allowed-content"
+                  data-state={state}
+                  className="hidden"
+                >
+                  Allowed content text
+                </div>
+              </div>
+            ),
+          }}
+          className="ut-button:bg-transparent ut-button:hover:bg-accent ut-button:hover:text-accent-foreground ut-button:w-full ut-button:mx-0 ut-button:h-10 ut-button:rounded-full ut-button:text-sm ut-allowed-content:hidden ut-button:px-3 ut-button:py-2 ut-button:focus:outline-none ut-button:focus:ring-0"
+          endpoint="pdfUploader"
+          onClientUploadComplete={(res) => {
+            fetch("/api/content/pdf", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ url: res[0].appUrl }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log("PDF processing result:", data);
+                toast.success("Upload Completed");
+              })
+              .catch((error) => {
+                console.error("Error processing PDF:", error);
+                toast.error("Error processing PDF");
+              });
+          }}
+          onUploadError={(error: Error) => {
+            toast.error(`ERROR! ${error.message}`);
+          }}
+        />
       </footer>
     </>
   );

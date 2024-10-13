@@ -18,8 +18,8 @@ import jsonData2 from "./ndvi_85004.json";
 import nwviData2 from "./ndwi_85004.json";
 import jsonData3 from "./ndvi_85248.json";
 import nwviData3 from "./ndwi_85248.json";
-import ViewSelect from "@/components/ui/view-select";
 import { ViewDock } from "@/components/ui/view-dock";
+import MapInfoCards from "@/components/ui/map-info-cards";
 
 const Demo = () => {
   const loadingSentences = [
@@ -711,6 +711,8 @@ const Demo = () => {
           uhiIntensity={clickedPopupInfo.uhiIntensity}
         />
       )}
+      <MapInfoCards />
+      <ChatPopup />
     </main>
   );
 };
