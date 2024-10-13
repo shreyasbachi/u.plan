@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import ShinyText from "@/components/ui/shiny-text";
 import ReactMarkdown from "react-markdown";
@@ -65,7 +66,8 @@ export default function Chat() {
         const decoder = new TextDecoder();
         let fullResponse = "";
 
-        setMessages((prev) => [...prev, { role: "bot", content: "" }]);
+        setMessages((prev) => [...prev, { role: "bot", content: "Loading..." }]);
+
 
         while (true) {
           const { done, value } = await reader.read();
@@ -120,14 +122,12 @@ export default function Chat() {
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`flex ${
-                message.role === "user" ? "justify-end" : "justify-start"
-              } mb-4`}
+              className={`flex ${message.role === "user" ? "justify-end" : "justify-start"
+                } mb-4`}
             >
               <div
-                className={`flex items-center ${
-                  message.role === "user" ? "flex-row-reverse" : "flex-row"
-                }`}
+                className={`flex items-center ${message.role === "user" ? "flex-row-reverse" : "flex-row"
+                  }`}
               >
                 <Avatar className="w-8 h-8 m-2">
                   {message.role === "bot" ? (
@@ -140,28 +140,25 @@ export default function Chat() {
                   )}
                 </Avatar>
                 <div
-                  className={`rounded-full px-4 py-2 text-sm break-words ${
-                    message.role === "user"
-                      ? "bg-gray-700 text-white"
-                      : "bg-gray-100"
-                  }`}
-                  style={{ width: "auto", maxWidth: "90%" }}
+                  className={`rounded-lg px-4 py-2 text-sm break-words ${message.role === "user"
+                    ? "bg-gray-700 text-white"
+                    : "bg-gray-100"
+                    }`}
+                  style={{ width: "80%", overflowWrap: "break-word" }}
                 >
-                  {message.role === "user" ? (
+                  {isLoading && message.role === "bot" && index === messages.length - 1 ? (
+                    <div className="flex items-center space-x-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span>Thinking...</span>
+                    </div>
+                  ) : message.role === "user" ? (
                     message.content
                   ) : (
-                    <ReactMarkdown className="gap-1">
+                    <ReactMarkdown className="gap-1 prose prose-sm max-w-none">
                       {message.content}
                     </ReactMarkdown>
                   )}
-                  {isStreaming &&
-                    index === messages.length - 1 &&
-                    message.content === "" && (
-                      <ShinyText
-                        className="text-sm px-0"
-                        sentences={loadingMessages}
-                      />
-                    )}
+
                 </div>
               </div>
             </div>

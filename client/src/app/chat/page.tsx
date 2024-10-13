@@ -32,19 +32,26 @@ export default function Home() {
             <Image src="/logo.png" alt="U-Plan Logo" width={40} height={40} />
           </Link>
         </div>
-        <Link href={"/chat"}>
-          <h1 className="text-3xl font-bold tracking-tight">u-plan</h1>
-        </Link>
-        <nav>
-          <ul className="flex">
-            <Link href="/">
-              <Button variant={"link"}>Home</Button>
-            </Link>{" "}
-            <Link href="/demo/85281">
-              <Button variant={"link"}>Demo</Button>
-            </Link>{" "}
-          </ul>
-        </nav>
+        <div className="flex items-center justify-between w-full">
+          <Link href={"/chat"}>
+            <h1 className="text-3xl font-bold tracking-tight">u-plan</h1>
+          </Link>
+          <nav>
+            <ul className="flex space-x-4">
+              <li>
+                <Link href="/">
+                  <Button variant="link">Home</Button>
+                </Link>
+              </li>
+              <li>
+                <Link href="/demo/85281">
+                  <Button variant="link">Demo</Button>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
       </header>
       <main className="flex-grow h-[80vh]">
         <div className="flex flex-col items-center justify-center mt-44">
