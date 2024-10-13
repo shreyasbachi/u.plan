@@ -7,6 +7,8 @@ from flask import Flask, jsonify, request
 import requests
 import random
 from flask_cors import CORS
+import json
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -108,7 +110,7 @@ def create_heatmap(zip_code, uhi_values):
     HeatMap(uhi_values).add_to(m)
     return m
 
-def create_scattered_points(bounding_box, num_points=25):
+def create_scattered_points(bounding_box, num_points=250):
     if not bounding_box:
         return []
     min_lat, max_lat, min_lon, max_lon = map(float, bounding_box)
@@ -143,7 +145,6 @@ def get_formatted_uhi_values(zip_code):
     if not uhi_values:
         return []
     
-    
     formatted_uhi_values = [
         {"coordinates": [round(lon, 2), round(lat, 2)], "temperature": round(uhi, 2)}
         for lat, lon, uhi in uhi_values
@@ -156,6 +157,19 @@ def get_formatted_uhi_values(zip_code):
     
     return formatted_uhi_values
 
+def save_uhi_data(zip_code, uhi_values):
+    data = {
+        "zip_code": zip_code,
+        "timestamp": datetime.now().isoformat(),
+        "uhi_values": uhi_values
+    }
+    
+    filename = f"uhi_data_{zip_code}.json"
+    with open(filename, "w") as f:
+        json.dump(data, f, indent=2)
+    
+    return filename
+
 @app.route('/uhi', methods=['GET'])
 def get_uhi():
     zip_code = request.args.get('zip_code')
@@ -167,7 +181,13 @@ def get_uhi():
     if not uhi_values:
         return jsonify({"error": f"Could not calculate UHI values for {zip_code}"}), 404
     
-    return jsonify({"uhi_values": uhi_values})
+    # Save the UHI data to a JSON file
+    json_filename = save_uhi_data(zip_code, uhi_values)
+    
+    return jsonify({
+        "uhi_values": uhi_values,
+        "json_file": json_filename
+    })
 
 if __name__ == "__main__":
     app.run(debug=True, port=3001) 
