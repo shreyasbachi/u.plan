@@ -8,7 +8,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { MapDock } from "@/components/ui/dock-demo";
+import { MapDock } from "@/components/ui/map-dock";
 import ChatPopup from "@/components/ui/chat-popup";
 import ShinyText from "@/components/ui/shiny-text";
 import { useParams } from "next/navigation";
@@ -18,6 +18,8 @@ import jsonData2 from "./ndvi_85004.json";
 import nwviData2 from "./ndwi_85004.json";
 import jsonData3 from "./ndvi_85248.json";
 import nwviData3 from "./ndwi_85248.json";
+import ViewSelect from "@/components/ui/view-select";
+import { ViewDock } from "@/components/ui/view-dock";
 
 const Demo = () => {
   const loadingSentences = [
@@ -669,7 +671,7 @@ const Demo = () => {
         </Button>
       </div>
 
-      <div className="absolute mt-4  justify-center top-4 items-center right-4 z-10 p-4  flex flex-row space-x-2">
+      <div className="absolute mt-4  justify-center top-4 items-center right-4 z-10 p-4  flex flex-col space-x-2 space-y-2">
         <form
           onSubmit={handleZipcodeSubmit}
           className="flex flex-row space-x-2"
@@ -686,6 +688,7 @@ const Demo = () => {
             Search
           </Button>
         </form>
+        <ViewDock />
       </div>
 
       {popupInfo && (
@@ -708,7 +711,6 @@ const Demo = () => {
           uhiIntensity={clickedPopupInfo.uhiIntensity}
         />
       )}
-      <ChatPopup />
     </main>
   );
 };

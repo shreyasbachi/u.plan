@@ -1,13 +1,15 @@
 export default function InfoCards() {
   return (
-    <section className="bg-white dark:bg-gray-900">
+    <section className="bg-white ">
       <div className="container p-2 px-6 mx-auto">
-        <div className="mt-2">
+        <span className="text-4xl font-semibold tracking-tight">
+          Urban Planning Made Easy
+        </span>
+        <div className="">
           <span className="inline-block w-40 h-1 bg-primary rounded-full"></span>
           <span className="inline-block w-3 h-1 ml-1 bg-primary rounded-full"></span>
           <span className="inline-block w-1 h-1 ml-1 bg-primary rounded-full"></span>
         </div>
-
         <div className="mt-8 xl:mt-8 lg:flex lg:items-center ">
           <div className="grid w-full grid-cols-1 gap-8 lg:w-full xl:gap-16 md:grid-cols-3">
             <div className="space-y-3">
@@ -28,7 +30,7 @@ export default function InfoCards() {
                 </svg>
               </span>
 
-              <h1 className="text-xl font-semibold text-black capitalize ">
+              <h1 className="text-xl font-semibold text-black ">
                 Are you an urban planner?
               </h1>
 

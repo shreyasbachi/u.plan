@@ -8,7 +8,7 @@ import Link from "next/link";
 const Blobs = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none">
     <div className="absolute -left-1/4 -top-1/4 w-1/2 h-1/2 rounded-full bg-orange-300 opacity-30 blur-3xl" />
-    {/* <div className="absolute -right-1/4 -bottom-1/4 w-1/2 h-1/2 rounded-full bg-orange-300 opacity-30 blur-3xl" /> */}
+    <div className="absolute -right-1/4 -top-1/4 w-1/2 h-1/2 rounded-full bg-orange-300 opacity-30 blur-3xl" />
   </div>
 );
 
@@ -34,7 +34,7 @@ export default function Home() {
           <h1 className="text-7xl font-bold tracking-tighter">u-plan</h1>
           <p className="text-base text-muted-foreground">
             Learn more about smartly planning your cities
-            <Button variant={"link"} className="px-1">
+            <Button variant={"link"} className="px-1 text-base">
               {" "}
               here.
             </Button>
@@ -67,7 +67,7 @@ export default function Home() {
 
             <div className="flex -mx-2">
               <Link
-                href="#"
+                href="https://github.com/dhruvb26/u.plan"
                 target="_blank"
                 className="mx-2 text-muted-foreground transition-colors duration-300  hover:text-primary hover:underline"
                 aria-label="Github"
