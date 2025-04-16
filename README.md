@@ -1,6 +1,6 @@
-# u-plan
+# U-Plan: HackHarvard 2024 Winner in Sustainability Track
 
-u-plan is a web platform designed for construction planners, governments, and urban developers to gather crucial environmental insights by simply entering a zipcode. The platform helps users make data-driven decisions for sustainable urban development, focusing on reducing the Urban Heat Island (UHI) effect, increasing vegetation cover, and selecting materials with better albedo for energy efficiency.
+U-Plan is a web platform designed for construction planners, governments, and urban developers to gather crucial environmental insights by simply entering a zipcode. The platform helps users make data-driven decisions for sustainable urban development, focusing on reducing the Urban Heat Island (UHI) effect, increasing vegetation cover, and selecting materials with better albedo for energy efficiency.
 
 ## Features
 
